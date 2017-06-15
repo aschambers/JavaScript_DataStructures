@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+// if new head is null, no items in linked list, so node
+// is both head and tail node
+// otherwise, prev and next pointers need to point to 
+// the correct node
+
+// linked list constructor function
+function LinkedList() {
+	this.head = null;
+	this.tail = null;
+};
+
+// node constructor function
+function Node(value, next, prev) {
+	this.value = value;
+	this.next = next;
+	this.prev = prev;
+};
+
+// adding node to head of linked list function
+LinkedList.prototype.addToHead = function(value) {
+	// new head, so prev should be null
+	var newNode = new Node(value, this.head, null);
+	if(this.head){
+		// this keyword refers to our linked list function
+		this.head.prev = newNode;
+	} else {
+		this.tail = newNode;
+	}
+	this.head = newNode;
+};
+
+// create linked list using constructor function
+var ll = new LinkedList();
+// add first node to linked list
+ll.addToHead(100);
+// add another node
+ll.addToHead(200);
+// add third node
+ll.addToHead(300);
+// see list in console
+console.log(ll);
+
+// adding node to tail of linked list function
+LinkedList.prototype.addToTail = function(value) {
+	var newNode = new Node(value, null, this.tail);
+	if(this.tail) {
+		this.tail.next = newNode;
+	} else {
+		this.head = newNode;
+	}
+	this.tail = newNode;
+};
+
+var ll2 = new LinkedList();
+
+ll2.addToTail(10);
+ll2.addToTail(20);
+ll2.addToTail(30);
+
+// should log out 20, since 30 is the last node
+console.log(ll2.tail.prev);
+// should log out 10 since first node
+console.log(ll2.tail.prev.prev);
+
+// add to head of ll2 linked list
+ll2.addToHead(100);
+console.log(ll2);
+
+LinkedList.prototype.removeHead = function() {
+	if(!this.head) {
+		return null;
+	} else {
+		var val = this.head.value;
+		this.head = this.head.next;
+		// if the head is not null, set the previous value to null to remove the head
+		if(this.head) {
+			this.head.prev = null;
+		// else if no head present, i.e. this.next is null, set this.tail to null also
+		// which essentially removes a linked list with only 1 value
+		} else {
+			this.tail = null;
+		}
+	}
+	// return the new head value
+	return val;
+};
+
+var ll3 = new LinkedList();
+ll3.addToHead(1000);
+ll3.addToHead(2000);
+ll3.addToTail(3000);
+console.log(ll3.removeHead());
+// values head should be 1000, with next being 3000 (the tail);
+console.log(ll3);
+
+LinkedList.prototype.removeTail = function() {
+	if(!this.tail) {
+		return null;
+	} else {
+		var val = this.tail.value;
+		this.tail = this.tail.prev;
+		// if the new tail is not null, set the next value to null to remove the tail
+		if(this.tail) {
+			this.tail.next = null;
+		// else if no tail present, i.e. this.prev is null, set this.head to null also
+		// which essentially removes a linked list with only 1 value
+		} else {
+			this.head = null;
+		}
+	}
+	// return the new head value
+	return val;
+};
+
+var ll4 = new LinkedList();
+
+ll4.addToHead('one');
+ll4.addToHead('two');
+ll4.addToHead('three');
+
+console.log(ll4.removeTail()); // --> returns one
+
+// search linked list for value
+LinkedList.prototype.search = function(searchValue) {
+	// if value return value, otherwise return null
+	var curNode = this.head;
+	// while not null, curNode = next node
+	while(curNode) {
+		if(curNode.value === searchValue) {
+			return curNode.value;
+		} else {
+			curNode = curNode.next;
+		}
+	}
+	return null;
+};
+
+var ll5 = new LinkedList();
+
+ll5.addToHead(123);
+ll5.addToHead(70);
+ll5.addToHead('hello');
+ll5.addToHead(19);
+ll5.addToTail('world');
+ll5.addToTail(20);
+ll5.addToTail(5);
+
+// should return 19 if found, if not return null
+console.log(ll5.search(19));
+
+LinkedList.prototype.indexOf = function(value) {
+	var array = [];
+	var curIndex = 0;
+	var curNode = this.head;
+	while(curNode) {
+		if(curNode.value === value) {
+			array.push(curIndex);
+		}
+		curNode = curNode.next;
+		curIndex++;
+	}
+	return array;
+};
+
+var ll6 = new LinkedList();
+ll6.addToHead(3);
+ll6.addToTail(5);
+ll6.addToTail(3);
+ll6.addToTail(8);
+
+// return indexes of 3
+console.log(ll6.indexOf(3));
+
+// Big O Notation of adding or removing the head/tail of Linked Lists: O (1) 
+// Big O Notation of searching Linked Lists: O (n)
+// Linked Lists are performant in nature
+// Allow to break up data that doesn't have to be stored together (advantage) -- next pointer
+// Very effective at using space or memory
+</script>
+</html>
